@@ -9,7 +9,7 @@ Author URI:
 License: GPL v2
 */
 
-// load functions only on the front end
+// load functions on the front end.
 if ( !is_admin() ) {
 
 	add_filter( 'query_vars', 'km_dp_date_pagination_query_var' );
@@ -33,7 +33,7 @@ if ( !is_admin() ) {
 	add_action( 'pre_get_posts', 'km_dp_date_pagination_pre_get_posts', 99 );
 
 	/**
-	 * Disables pagination if 'date_pagination_type' query var is used.
+	 * Resets date query vars if 'date_pagination_type' query var is used.
 	 *
 	 * @since 0.1
 	 *
@@ -42,13 +42,27 @@ if ( !is_admin() ) {
 	 */
 	function km_dp_date_pagination_pre_get_posts( $query ) {
 
+		if ( is_date() )
+			return;
+
 		if ( isset( $query->query_vars['date_pagination_type'] ) ) {
 
 			$type = $query->query_vars['date_pagination_type'];
 
 			if ( km_dp_date_pagination_is_valid_type( $type ) ) {
 
-				// disable paging
+				$reset_query_vars =  array(
+					'second' , 'minute', 'hour',
+					'day', 'monthnum', 'year',
+					'w', 'm',
+				);
+
+				// reset date query vars
+				foreach ( $reset_query_vars as $var ) {
+					$query->set( $var, '' );
+				}
+
+				// disable paging just for good measure
 				$query->set( 'nopaging', true );
 			}
 		}
@@ -68,6 +82,9 @@ if ( !is_admin() ) {
 	 */
 	function km_dp_date_pagination_posts_clauses( $clauses, $query ) {
 		global $wpdb;
+
+		if ( is_date() )
+			return $clauses;
 
 		// check if query var 'date_pagination_type' is used for query
 		if ( !isset( $query->query_vars['date_pagination_type'] ) )
@@ -202,8 +219,8 @@ if ( !is_admin() ) {
 	 * @param string $format Date format.
 	 * @return string Formatted date or empty string.
 	 */
-	function km_dp_next_date_label( $query = 0 , $format ='' ) {
-		return km_dp_date_pagination_get_date( $query, $format );
+	function km_dp_next_date_label( $format = '', $query = 0  ) {
+		return km_dp_date_pagination_get_date( $format, $query );
 	}
 
 
@@ -216,8 +233,8 @@ if ( !is_admin() ) {
 	 * @param string $format Date format.
 	 * @return string Formatted date or empty string.
 	 */
-	function km_dp_previous_date_label( $query = 0 , $format = '' ) {
-		return km_dp_date_pagination_get_date( $query, $format, true );
+	function km_dp_previous_date_label( $format = '', $query = 0 ) {
+		return km_dp_date_pagination_get_date( $format, $query, true );
 	}
 
 
@@ -231,8 +248,17 @@ if ( !is_admin() ) {
 	 * @param string $previous. Previous or next date.
 	 * @return string Formatted date or empty string.
 	 */
-	function km_dp_date_pagination_get_date( $query, $format = '', $previous = false ) {
+	function km_dp_date_pagination_get_date( $format = '', $query = 0, $previous = 0 ) {
+
 		$date = '';
+
+		if ( is_date() )
+			return $date;
+
+		if ( !$query ) {
+			global $wp_query;
+			$query = $wp_query;
+		}
 
 		if ( !is_a( (object) $query, 'WP_Query' ) )
 			return $date;
@@ -257,7 +283,7 @@ if ( !is_admin() ) {
 
 				if ( ( $type == 'monthly' ) && $year && $month ) {
 					$date = $year . '-' . zeroise( $month, 2 ) . '-01';
-					$format = ( '' != $format ) ? (string) $format : 'F, Y';
+					$format = ( '' != $format ) ? (string) $format : 'F Y';
 				}
 
 				if ( ( $type == 'daily' )  && $year && $month && $day ) {
@@ -270,6 +296,5 @@ if ( !is_admin() ) {
 
 		return ( '' != $date ) ? mysql2date( $format, $date . ' 00:00:00' ) : '';
 	}
-
 
 } // if( !is_admin() )
