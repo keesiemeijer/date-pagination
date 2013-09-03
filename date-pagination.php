@@ -219,7 +219,7 @@ if ( !is_admin() ) {
 	 * @param string $format Date format.
 	 * @return string Formatted date or empty string.
 	 */
-	function km_dp_next_date_label( $format = '', $query = 0  ) {
+	function km_dp_get_next_date_label( $format = '', $query = 0  ) {
 		return km_dp_date_pagination_get_date( $format, $query );
 	}
 
@@ -233,7 +233,7 @@ if ( !is_admin() ) {
 	 * @param string $format Date format.
 	 * @return string Formatted date or empty string.
 	 */
-	function km_dp_previous_date_label( $format = '', $query = 0 ) {
+	function km_dp_get_previous_date_label( $format = '', $query = 0 ) {
 		return km_dp_date_pagination_get_date( $format, $query, true );
 	}
 
@@ -296,5 +296,6 @@ if ( !is_admin() ) {
 
 		return ( '' != $date ) ? mysql2date( $format, $date . ' 00:00:00' ) : '';
 	}
+
 
 } // if( !is_admin() )
