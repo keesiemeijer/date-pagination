@@ -19,7 +19,7 @@ if ( !is_admin() ) {
 	 *
 	 * @since 0.1
 	 *
-	 * @param array $query_vars
+	 * @param array   $query_vars
 	 * @return array
 	 */
 	function km_dp_date_pagination_query_var( $query_vars ) {
@@ -37,7 +37,7 @@ if ( !is_admin() ) {
 	 *
 	 * @since 0.1
 	 *
-	 * @param object $query Query object.
+	 * @param object  $query Query object.
 	 * @return void
 	 */
 	function km_dp_date_pagination_pre_get_posts( $query ) {
@@ -76,8 +76,8 @@ if ( !is_admin() ) {
 	 *
 	 * @since 0.1
 	 *
-	 * @param array $clauses Post clauses.
-	 * @param object $query Query Object.
+	 * @param array   $clauses Post clauses.
+	 * @param object  $query   Query Object.
 	 * @return array Post clauses
 	 */
 	function km_dp_date_pagination_posts_clauses( $clauses, $query ) {
@@ -137,6 +137,9 @@ if ( !is_admin() ) {
 				$start = (int) $paged-1;
 				$date = array_slice( (array) $dates, $start, 1 );
 
+				// add current object to query
+				$query->set( 'date_pagination_current', $date );
+
 				// add next object to query
 				$next = array_slice( (array) $dates, $start+1, 1 );
 				$query->set( 'date_pagination_next', $next );
@@ -178,7 +181,7 @@ if ( !is_admin() ) {
 	 *
 	 * @since 0.1
 	 *
-	 * @param object $query Query Object.
+	 * @param object  $query Query Object.
 	 * @return array Array with post objects
 	 */
 	function km_dp_date_pagination_max_num_pages( $posts, $query ) {
@@ -196,7 +199,7 @@ if ( !is_admin() ) {
 	 *
 	 * @since 0.1
 	 *
-	 * @param string $type
+	 * @param string  $type
 	 * @return bool True if type is valid.
 	 */
 	function km_dp_date_pagination_is_valid_type( $type ) {
@@ -215,8 +218,8 @@ if ( !is_admin() ) {
 	 *
 	 * @since 0.1
 	 *
-	 * @param object $query WP_Query Object.
-	 * @param string $format Date format.
+	 * @param object  $query  WP_Query Object.
+	 * @param string  $format Date format.
 	 * @return string Formatted date or empty string.
 	 */
 	function km_dp_get_next_date_label( $format = '', $query = 0  ) {
@@ -229,8 +232,8 @@ if ( !is_admin() ) {
 	 *
 	 * @since 0.1
 	 *
-	 * @param object $query WP_Query Object.
-	 * @param string $format Date format.
+	 * @param object  $query  WP_Query Object.
+	 * @param string  $format Date format.
 	 * @return string Formatted date or empty string.
 	 */
 	function km_dp_get_previous_date_label( $format = '', $query = 0 ) {
@@ -239,13 +242,27 @@ if ( !is_admin() ) {
 
 
 	/**
+	 * Returns current date label from query.
+	 *
+	 * @since 0.1
+	 *
+	 * @param object  $query  WP_Query Object.
+	 * @param string  $format Date format.
+	 * @return string Formatted date or empty string.
+	 */
+	function km_dp_get_current_date_label( $format = '', $query = 0 ) {
+		return km_dp_date_pagination_get_date( $format, $query, 'current' );
+	}
+
+
+	/**
 	 * Returns a formatted date from a query.
 	 *
 	 * @since 0.1
 	 *
-	 * @param object $query WP_Query Object.
-	 * @param string $format Date format.
-	 * @param string $previous. Previous or next date.
+	 * @param object  $query     WP_Query Object.
+	 * @param string  $format    Date format.
+	 * @param string  $previous. Previous or next date.
 	 * @return string Formatted date or empty string.
 	 */
 	function km_dp_date_pagination_get_date( $format = '', $query = 0, $previous = 0 ) {
@@ -267,7 +284,16 @@ if ( !is_admin() ) {
 
 		if ( !empty( $type ) && km_dp_date_pagination_is_valid_type( $type ) ) {
 
-			$next_prev = ( !$previous ) ? 'date_pagination_next' : 'date_pagination_prev';
+			$next_prev = 'date_pagination_next';
+
+			if ( $previous ) {
+				$next_prev = 'date_pagination_prev';
+
+				if ( $previous === 'current' ) {
+					$next_prev = 'date_pagination_current';
+				}
+			}
+
 			$date_obj = $query->get( $next_prev );
 
 			if ( !empty( $date_obj ) ) {
