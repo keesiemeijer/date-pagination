@@ -1,4 +1,4 @@
-=== Date Pagination ===
+# Date Pagination #
 Contributors: keesiemeijer
 Tags: pagination, paginate, yearly pagination, monthly pagination, daily pagination
 Requires at least: 3.8
@@ -9,7 +9,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Paginate your posts by year, month or day.
 
-== Description ==
+## Description ##
 
 This plugin is aimed at developers and provides an easy way to paginate posts by year, month or day in theme templates. It uses the native WordPress [pagination functions](http://codex.wordpress.org/Pagination#Function_Reference) for display of the pagination links.
 
@@ -17,7 +17,7 @@ Use the new date_pagination_type query argument with a custom query ([WP_Query](
 
 For more information on how to use this plugin with your theme template files visit [the documentation](https://keesiemeijer.wordpress.com/date-pagination/)
 
-== Installation ==
+## Installation ##
 
 * Unzip the <code>date-pagination.zip</code> folder.
 * Upload the <code>date-pagination</code> folder to your <code>/wp-content/plugins</code> directory.
