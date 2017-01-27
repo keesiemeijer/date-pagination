@@ -2,11 +2,7 @@
 class Date_Pagination_Utils extends WP_UnitTestCase {
 
 	public $type;
-
-	public function __construct() {
-		parent::__construct();
-	}
-
+	
 	/**
 	 * Creates posts with decreasing timestamps.
 	 *
@@ -16,11 +12,17 @@ class Date_Pagination_Utils extends WP_UnitTestCase {
 	 */
 	function create_posts( $post_type = 'post', $posts_per_page = 5 ) {
 
+		if( ! ( isset( $this->factory ) && is_object( $this->factory ) ) ) {
+			$factory = new WP_UnitTest_Factory();
+		} else {
+			$factory = $this->factory;
+		}
+
 		// create posts with decreasing timestamp
 		$posts = array();
 		$now = time();
 		foreach ( range( 0, ( ( $posts_per_page -1 ) * 4 ), 4 ) as $i ) {
-			$this->factory->post->create(
+			$factory->post->create(
 				array(
 					'post_date' => date( 'Y-m-d H:i:s', $now - ( $i * MONTH_IN_SECONDS ) ),
 					'post_type' => $post_type
