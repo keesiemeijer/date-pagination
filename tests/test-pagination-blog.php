@@ -32,7 +32,8 @@ class Test_Date_Pagination_For_Pages extends WP_UnitTestCase {
 	function test_blog_page() {
 		$this->go_to( get_permalink( $this->blogpage ) );
 		$this->assertTrue( is_home() );
-		$this->assertEquals( array( 'blog' ), get_body_class() );
+		$this->assertContains( 'blog', get_body_class() );
+		//$this->assertEquals( array( 'blog' ), get_body_class() );
 	}
 
 	/**
