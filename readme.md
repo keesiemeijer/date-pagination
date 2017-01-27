@@ -2,6 +2,8 @@
 
 Paginate your posts by year, month or day.
 
+![Build Status](https://travis-ci.org/keesiemeijer/date-pagination.svg?branch=master)](http://travis-ci.org/keesiemeijer/date-pagination)
+
 ## Description ##
 
 This WordPress plugin is aimed at developers and provides an easy way to paginate posts by year, month or day in theme templates. It uses the native WordPress [pagination functions](http://codex.wordpress.org/Pagination#Function_Reference) for display of the pagination links.
