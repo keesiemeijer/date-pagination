@@ -2,7 +2,7 @@
 
 Paginate your posts by year, month or day.
 
-![Build Status](https://travis-ci.org/keesiemeijer/date-pagination.svg?branch=master)](http://travis-ci.org/keesiemeijer/date-pagination)
+[![Build Status](https://travis-ci.org/keesiemeijer/date-pagination.svg?branch=master)](http://travis-ci.org/keesiemeijer/date-pagination)
 
 ## Description ##
 
