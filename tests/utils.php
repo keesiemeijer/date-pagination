@@ -3,6 +3,10 @@ class Date_Pagination_Utils extends WP_UnitTestCase {
 
 	public $type;
 
+	public function __construct() {
+		parent::__construct();
+	}
+
 	/**
 	 * Creates posts with decreasing timestamps.
 	 *
