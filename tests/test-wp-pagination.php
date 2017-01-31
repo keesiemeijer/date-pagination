@@ -35,16 +35,31 @@ class Test_Date_WP_Pagination extends WP_UnitTestCase {
 	/**
 	 * Test km_dp_paginate_links with formatted date labels.
 	 */
-	function test_km_dp_paginate_links_labels() {
+	function test_km_dp_paginate_link_labels() {
 		$this->utils->paginate_by_date( 'monthly' );
 		// Go to a first post page
 		$this->go_to( '/' );
-		$args =array(
-			'date_format' => 'M',
-			'dat_type'    => 'monthly',
-			'type'        => 'array'
-		);
+		$args = array( 'type' => 'array', 'date_format' => 'M' );
 		$pagination = km_dp_paginate_links( $args );
+		$expected = '>' . mysql2date( 'M', $this->posts[1]->post_date ) . '<';
+		$this->assertContains( $expected, $pagination[1] );
+	}
+
+	/**
+	 * Test km_dp_paginate_links with formatted date labels.
+	 */
+	function test_km_dp_paginate_link_labels_custom_query() {
+		// Go to a first post page
+		$this->go_to( '/' );
+		$the_query = new WP_Query( 'date_pagination_type=monthly' );
+
+		// Pagination arguments.
+		$args = array(
+			'type'        => 'array',
+			'date_format' => 'M',
+			'date_query'  => $the_query );
+
+		$pagination = km_dp_paginate_links( $args, $the_query );
 		$expected = '>' . mysql2date( 'M', $this->posts[1]->post_date ) . '<';
 		$this->assertContains( $expected, $pagination[1] );
 	}
@@ -58,11 +73,7 @@ class Test_Date_WP_Pagination extends WP_UnitTestCase {
 
 		// Go to a first post page
 		$this->go_to( '/' );
-		$args =array(
-			'date_format' => 'M',
-			'dat_type'    => 'monthly',
-			'type'        => 'array'
-		);
+		$args = array( 'type' => 'array', 'date_format' => 'M' );
 
 		// remove last value of 'date_pagination_dates'
 		global $wp_query;
@@ -98,10 +109,7 @@ class Test_Date_WP_Pagination extends WP_UnitTestCase {
 <a class="next page-numbers" href="$page2">Next &raquo;</a>
 EXPECTED;
 
-		$args =array(
-			'date_format' => 'M',
-			'dat_type'    => 'monthly',
-		);
+		$args = array( 'date_format' => 'M' );
 		$links = km_dp_paginate_links( $args );
 		$this->assertEquals( $expected, $links );
 	}
@@ -130,11 +138,7 @@ EXPECTED;
 <a class="next page-numbers" href="$page2">Next &raquo;</a>
 EXPECTED;
 
-		$args =array(
-			'date_format' => 'M',
-			'dat_type'    => 'monthly',
-			'format' => 'page/%#%/'
-		);
+		$args =array( 'date_format' => 'M', 'format' => 'page/%#%/' );
 		$links = km_dp_paginate_links( $args );
 		$this->assertEquals( $expected, $links );
 	}
@@ -169,7 +173,6 @@ EXPECTED;
 
 		$args =array(
 			'date_format' => 'M',
-			'dat_type'    => 'monthly',
 			'prev_next' => false,
 			'current' => 2,
 		);
@@ -207,7 +210,6 @@ EXPECTED;
 
 		$args =array(
 			'date_format' => 'M',
-			'dat_type'    => 'monthly',
 			'prev_next' => true,
 			'current' => 2,
 		);

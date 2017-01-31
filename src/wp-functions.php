@@ -3,7 +3,7 @@
  * Functions copied from WordPress core.
  *
  * All functions have been adapted to accept Date Pagination arguments.
- * 
+ *
  * @package Date_Pagination
  */
 
@@ -25,8 +25,13 @@
 function km_dp_get_the_posts_pagination( $args = array() ) {
 	$navigation = '';
 
+	$query = $GLOBALS['wp_query'];
+	if ( isset( $args['date_query'] ) && ( $args['date_query'] instanceof WP_Query ) ) {
+		$query = $args['date_query'];
+	}
+
 	// Don't print empty markup if there's only one page.
-	if ( $GLOBALS['wp_query']->max_num_pages > 1 ) {
+	if ( $query->max_num_pages > 1 ) {
 		$args = wp_parse_args( $args, array(
 				'mid_size'           => 1,
 				'prev_text'          => _x( 'Previous', 'previous set of posts' ),
@@ -34,9 +39,8 @@ function km_dp_get_the_posts_pagination( $args = array() ) {
 				'screen_reader_text' => __( 'Posts navigation' ),
 
 				// Date pagination arguments
-				'dates'              => array(),
 				'date_format'        => '',
-				'date_type'          => '',
+				'date_query'         => '',
 			) );
 
 		// Make sure we get a string back. Plain is the next best thing.
@@ -72,7 +76,7 @@ function km_dp_the_posts_pagination( $args = array() ) {
 /**
  * Retrieve paginated link for archive post pages.
  *
- * This function is a copy of paginate_links(). 
+ * This function is a copy of paginate_links().
  *
  * Technically, the function can be used to create paginated link list for any
  * area. The 'base' argument is used to reference the url, which will be used to
@@ -125,44 +129,49 @@ function km_dp_the_posts_pagination( $args = array() ) {
  * @param string|array $args {
  *     Optional. Array or string of arguments for generating paginated links for archives.
  *
- *     @type string $base               Base of the paginated url. Default empty.
- *     @type string $format             Format for the pagination structure. Default empty.
- *     @type int    $total              The total amount of pages. Default is the value WP_Query's
- *                                      `max_num_pages` or 1.
- *     @type int    $current            The current page number. Default is 'paged' query var or 1.
- *     @type bool   $show_all           Whether to show all pages. Default false.
- *     @type int    $end_size           How many numbers on either the start and the end list edges.
- *                                      Default 1.
- *     @type int    $mid_size           How many numbers to either side of the current pages. Default 2.
- *     @type bool   $prev_next          Whether to include the previous and next links in the list. Default true.
- *     @type bool   $prev_text          The previous page text. Default '&laquo; Previous'.
- *     @type bool   $next_text          The next page text. Default 'Next &raquo;'.
- *     @type string $type               Controls format of the returned value. Possible values are 'plain',
- *                                      'array' and 'list'. Default is 'plain'.
- *     @type array  $add_args           An array of query args to add. Default false.
- *     @type string $add_fragment       A string to append to each link. Default empty.
- *     @type string $before_page_number A string to appear before the page number. Default empty.
- *     @type string $after_page_number  A string to append after the page number. Default empty.
- *     @type string $date_type          Date pagination type. Accepts 'yearly', 'monthly', 'daily'.
- *                                      Default empty. If not supplied page numbers are used.                            
- *     @type string $date_format        Date format. If not supplied page numbers are used. 
- *                                      Default empty. If not supplied page numbers are used. 
- *     @type array  $dates              Array with dates. If none are supplied it tries to get them from 
- *                                      WP_Query's 'date_pagination_dates' query var. Default empty.
- *                                      Page numbers are used if no dates are found or the count of dates is
- *                                      not equal to the total amount of pages. 
+ *     @type string  $base               Base of the paginated url. Default empty.
+ *     @type string  $format             Format for the pagination structure. Default empty.
+ *     @type int     $total              The total amount of pages. Default is the value WP_Query's
+ *                                       `max_num_pages` or 1.
+ *     @type int     $current            The current page number. Default is 'paged' query var or 1.
+ *     @type bool    $show_all           Whether to show all pages. Default false.
+ *     @type int     $end_size           How many numbers on either the start and the end list edges.
+ *                                       Default 1.
+ *     @type int     $mid_size           How many numbers to either side of the current pages. Default 2.
+ *     @type bool    $prev_next          Whether to include the previous and next links in the list. Default true.
+ *     @type bool    $prev_text          The previous page text. Default '&laquo; Previous'.
+ *     @type bool    $next_text          The next page text. Default 'Next &raquo;'.
+ *     @type string  $type               Controls format of the returned value. Possible values are 'plain',
+ *                                       'array' and 'list'. Default is 'plain'.
+ *     @type array   $add_args           An array of query args to add. Default false.
+ *     @type string  $add_fragment       A string to append to each link. Default empty.
+ *     @type string  $before_page_number A string to appear before the page number. Default empty.
+ *     @type string  $after_page_number  A string to append after the page number. Default empty.
+ *     @type WP_Qery $date_query         Date query object.
+ *                                       Default empty. If not supplied page numbers are used.
+ *     @type string  $date_format        Date format. If not supplied page numbers are used.
+ *                                       Default empty. If not supplied page numbers are used.
+ *     @type array   $dates              Array with dates. If none are supplied it tries to get them from
+ *                                       WP_Query's 'date_pagination_dates' query var. Default empty.
+ *                                       Page numbers are used if no dates are found or the count of dates is
+ *                                       not equal to the total amount of pages.
  * }
  * @return array|string|void String of page links or array of page links.
  */
-function km_dp_paginate_links( $args = '' ) {
+function km_dp_paginate_links( $args = array() ) {
 	global $wp_query, $wp_rewrite;
 
 	// Setting up default values based on the current URL.
 	$pagenum_link = html_entity_decode( get_pagenum_link() );
 	$url_parts    = explode( '?', $pagenum_link );
 
+	$query = $wp_query;
+	if ( isset( $args['date_query'] ) && ( $args['date_query'] instanceof WP_Query ) ) {
+		$query = $args['date_query'];
+	}
+
 	// Get max pages and current page out of the current query, if available.
-	$total   = isset( $wp_query->max_num_pages ) ? $wp_query->max_num_pages : 1;
+	$total   = isset( $query->max_num_pages ) ? $query->max_num_pages : 1;
 	$current = get_query_var( 'paged' ) ? intval( get_query_var( 'paged' ) ) : 1;
 
 	// Append the format placeholder to the base URL.
@@ -189,10 +198,10 @@ function km_dp_paginate_links( $args = '' ) {
 		'before_page_number' => '',
 		'after_page_number'  => '',
 
-		// Date Pagination arguments
-		'dates'              => array(),
+		// Date pagination arguments
 		'date_format'        => '',
-		'date_type'          => '',
+		'date_query'         => '',
+
 	);
 
 	$args = wp_parse_args( $args, $defaults );
@@ -237,20 +246,13 @@ function km_dp_paginate_links( $args = '' ) {
 	$r           = '';
 	$page_links  = array();
 	$dots        = false;
-	$date_format = (string) $args['date_format'];
 
-	$dates = $args['dates'];
-	if ( empty( $dates ) ) {
-		$dates = $wp_query->get( 'date_pagination_dates' );
-	}
-
-	$dates = is_array( $dates ) ? $dates : array();
-	$dates = ( count( $dates ) === $total ) ? $dates : array();
-
-	$date_type = (string) $args['date_type'];
-	if ( !$date_type ) {
-		$date_type = $wp_query->get( 'date_pagination_type' );
-	}
+	// Date parameters
+	$date_format = trim( (string) $args['date_format'] );
+	$date_type   = $query->get( 'date_pagination_type' );
+	$dates       = $query->get( 'date_pagination_dates' );
+	$dates       = is_array( $dates ) ? $dates : array();
+	$dates       = ( count( $dates ) === $total ) ? $dates : array();
 
 	$use_dates = false;
 	if ( $date_format && !empty( $dates ) && km_dp_date_pagination_is_valid_type( $date_type ) ) {
