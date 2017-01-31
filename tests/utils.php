@@ -12,35 +12,37 @@ class Date_Pagination_Utils extends WP_UnitTestCase {
 	 */
 	function create_posts( $post_type = 'post', $posts_per_page = 5 ) {
 
+		_delete_all_posts();
+
 		if ( ! ( isset( $this->factory ) && is_object( $this->factory ) ) ) {
 			$factory = new WP_UnitTest_Factory();
 		} else {
 			$factory = $this->factory;
 		}
 
-		if ( !defined( 'MONTH_IN_SECONDS' ) ) {
+		if ( ! defined( 'MONTH_IN_SECONDS' ) ) {
 			define( 'MONTH_IN_SECONDS',  30 * DAY_IN_SECONDS    );
 		}
 
-		// create posts with decreasing timestamp
+		// create posts with 4 months decreasing timestamp
 		$posts = array();
 		$now = time();
 		foreach ( range( 0, ( ( $posts_per_page -1 ) * 4 ), 4 ) as $i ) {
 			$factory->post->create(
 				array(
 					'post_date' => date( 'Y-m-d H:i:s', $now - ( $i * MONTH_IN_SECONDS ) ),
-					'post_type' => $post_type
+					'post_type' => $post_type,
 				) );
 		}
 
 		// Return posts by desc date.
 		$posts = get_posts(
 			array(
-				'posts_per_page' => $posts_per_page,
+				'posts_per_page' => -1,
 				'post_type'      => $post_type,
 				//'fields'         => 'ids',
 				'order'          => 'DESC',
-				'orderby'        => 'date'
+				'orderby'        => 'date',
 			) );
 
 		return $posts;
@@ -82,7 +84,7 @@ class Date_Pagination_Utils extends WP_UnitTestCase {
 	}
 
 	function paginate_by_date_action( $query ) {
-		if ( !is_admin() && $query->is_main_query() ) {
+		if ( ! is_admin() && $query->is_main_query() ) {
 			$query->set( 'date_pagination_type', $this->type );
 		}
 	}
