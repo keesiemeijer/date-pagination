@@ -79,6 +79,8 @@ class Test_Date_Pagination_Functions extends WP_UnitTestCase {
 	/**
 	 * Test if any function produces output.
 	 * Bassically testing if there's debuginng output
+	 *
+	 * @requires function _navigation_markup
 	 */
 	function test_output() {
 		$date = array( array( 'year' => 2017 ) );
@@ -87,13 +89,15 @@ class Test_Date_Pagination_Functions extends WP_UnitTestCase {
 		ob_start();
 		$this->utils->paginate_by_date( 'monthly' );
 		$this->go_to( '/' );
-		$valid    = km_dp_date_pagination_is_valid_type('');
+		$valid    = km_dp_date_pagination_is_valid_type( '' );
 		$next     = km_dp_get_next_date_label();
 		$previous = km_dp_get_previous_date_label();
 		$current  = km_dp_get_current_date_label();
 		$date     = km_dp_date_pagination_set_date( $date );
+		$pag      = km_dp_get_the_posts_pagination( array( 'total' => 5 ) );
+		$pag2     = km_dp_paginate_links( array( 'total' => 5, 'type' => 'array' ) );
 		$out      = ob_get_clean();
 
-		//$this->assertEmpty( $out );
+		$this->assertEmpty( $out );
 	}
 }
