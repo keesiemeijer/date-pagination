@@ -1,12 +1,12 @@
 <?php
 /**
- * Class SampleTest
+ * Test pagination functions
  *
  * @package Date_Pagination_Unit_Tests
  */
 
 /**
- * Sample test case.
+ * Class testing date labels and WordPress pagination.
  */
 class Test_Date_Pagination extends WP_UnitTestCase {
 
@@ -58,7 +58,7 @@ class Test_Date_Pagination extends WP_UnitTestCase {
 		// Go to a first post page
 		$this->go_to( '/' );
 		$expected = mysql2date( 'F j, Y', $this->posts[0]->post_date );
-		$this->assertEquals($expected, km_dp_get_current_date_label( 'F j, Y' ));
+		$this->assertEquals( $expected, km_dp_get_current_date_label( 'F j, Y' ) );
 	}
 
 
