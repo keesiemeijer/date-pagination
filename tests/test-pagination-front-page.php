@@ -75,6 +75,18 @@ class Test_Date_Pagination_Static_Front_page extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test first page pagination without posts.
+	 */
+	function test_monthly_pagination_no_posts() {
+		_delete_all_posts();
+		// Go to a first post page
+		$this->go_to( '/' );
+		$query = new WP_Query( 'post_type=post&date_pagination_type=monthly&posts_per_page=-1' );
+		$this->utils->assertLabelEmpty( km_dp_get_next_date_label( 'F Y', $query ), 'next' );
+		$this->utils->assertLabelEmpty( km_dp_get_previous_date_label( 'F Y', $query), 'previous' );
+	}
+
+	/**
 	 * Test third page pagination with query var paged.
 	 */
 	function test_monthly_pagination_paged_3() {

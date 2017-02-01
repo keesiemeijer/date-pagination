@@ -29,7 +29,7 @@ class Test_Date_Pagination extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test pagination label is empty when date_pagination_type query var is not set.
+	 * Test query var date_pagination_type is set.
 	 */
 	function test_query_var() {
 		$this->utils->paginate_by_date( '' );
@@ -75,6 +75,18 @@ class Test_Date_Pagination extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test first page pagination without posts.
+	 */
+	function test_monthly_pagination_no_posts() {
+		$this->utils->paginate_by_date( 'monthly' );
+		_delete_all_posts();
+		// Go to a first post page
+		$this->go_to( '/' );
+		$this->utils->assertLabelEmpty( km_dp_get_next_date_label(), 'next' );
+		$this->utils->assertLabelEmpty( km_dp_get_previous_date_label(), 'previous' );
+	}
+
+	/**
 	 * Test third page pagination.
 	 */
 	function test_monthly_pagination_paged_3() {
@@ -112,7 +124,7 @@ class Test_Date_Pagination extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Query var 'date_pagination_dates' is set.
+	 * Tesst yearly pagination and query var 'date_pagination_dates'.
 	 */
 	function test_yearly_pagination() {
 		$this->utils->paginate_by_date( 'yearly' );
