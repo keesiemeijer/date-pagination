@@ -1,6 +1,7 @@
 <?php
 /**
  * Filters for WP_Query.
+ *
  * @package Date_Pagination
  */
 
@@ -43,13 +44,13 @@ function km_dp_date_pagination_pre_get_posts( $query ) {
 	 * Filter to reset WP_Query date query vars before a Date Pagination query.
 	 *
 	 * @since 2.0.0
-	 * 
+	 *
 	 * @param bool   $reset Whether to reset query vars. Default true.
 	 * @param string $type  Date pagination type. Accepts 'yearly', 'monthly', 'daily'.
 	 */
-	$reset = apply_filters('date_pagination_reset_date_query_vars', true, $type );
+	$reset = apply_filters( 'date_pagination_reset_date_query_vars', true, $type );
 
-	if( ! $reset ) {
+	if ( ! $reset ) {
 		return;
 	}
 
@@ -59,14 +60,14 @@ function km_dp_date_pagination_pre_get_posts( $query ) {
 		'w', 'm',
 	);
 
-	// reset date query vars
+	// Reset date query vars.
 	foreach ( $query_vars as $var ) {
 		$query->set( $var, '' );
 	}
 
 	$query->set( 'date_query', false );
 
-	// disable paging just for good measure
+	// Disable paging just for good measure.
 	// Limit clause is also reset by km_dp_date_pagination_posts_clauses().
 	$query->set( 'nopaging', true );
 }
@@ -78,7 +79,7 @@ add_filter( 'posts_clauses', 'km_dp_date_pagination_posts_clauses', 99, 2 );
  * Sets the sql clauses if query var 'date_pagination_type' is used.
  *
  * @since 0.1
- * 
+ *
  * @global $wpdb   Database object.
  *
  * @param array   $clauses Post clauses.
@@ -118,7 +119,7 @@ function km_dp_date_pagination_posts_clauses( $clauses, $query ) {
 
 	// Add Date Pagination max_num_pages to the query object.
 	$query->set( 'date_pagination_max_num_pages', $page_count );
- 
+
 	/** Replace max_num_pages with date_pagination_max_num_pages */
 	add_filter( 'the_posts', 'km_dp_date_pagination_max_num_pages', 99, 2 );
 
