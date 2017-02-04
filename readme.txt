@@ -11,9 +11,9 @@ Paginate your posts by year, month or day.
 
 == Description ==
 
-This plugin provides an easy way to paginate posts by year, month or day in your theme’s template files. Use the native [WordPress pagination functions](https://keesiemeijer.wordpress.com/date-pagination/functions/#wp-pagination-functions) to display the pagination links.
+This plugin provides an easy way to paginate posts by year, month or day in your theme's template files. Use the native [WordPress pagination functions](https://keesiemeijer.wordpress.com/date-pagination/functions/#wp-pagination-functions) to display the pagination links.
 
-It’s likely your theme is already using these functions for normal pagination. If not, see if it works with your theme’s pagination or add them yourself.
+It's likely your theme is already using these functions for normal pagination. If not, see if it works with your theme's pagination or add them yourself.
 
 To tell WordPress a page should be paginated by dates set the `date_pagination_type` query argument to `yearly`, `monthly` or `daily` for a custom query ([WP_Query](http://codex.wordpress.org/Function_Reference/WP_Query)), or in the [pre_get_posts](https://codex.wordpress.org/Plugin_API/Action_Reference/pre_get_posts) action.
 
@@ -25,7 +25,7 @@ Follow this plugin on [GitHub](https://github.com/keesiemeijer/date-pagination)
 
 Follow these instructions to install the plugin.
 
-* Unzip the <code>date-pagination.zip</code> folder.
-* Upload the <code>date-pagination</code> folder to your <code>/wp-content/plugins</code> directory.
-* Activate *date-pagination* through the 'Plugins' menu in WordPress.
-* That's it, now you are ready to use the plugin in your theme template files.
+1. In your WordPress admin panel, go to Plugins > New Plugin, search for "date pagination" and click "Install now".
+2. Alternatively, download the plugin and upload the contents of custom-post-type-date-archives.zip to your plugins directory, which usually is /wp-content/plugins/.
+3. Activate the plugin.
+4. That's it, now you are ready to use the plugin in your theme template files.
