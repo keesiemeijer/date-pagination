@@ -2,7 +2,7 @@
 Contributors: keesiemeijer
 Tags: pagination,paginate,date,yearly,monthly,daily 
 Requires at least: 4.0
-Tested up to: 4.7
+Tested up to: 4.8
 Stable tag: 2.1.0-alpha
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
