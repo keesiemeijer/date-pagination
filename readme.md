@@ -4,9 +4,9 @@ Paginate your posts by year, month or day.
 
 [![Build Status](https://travis-ci.org/keesiemeijer/date-pagination.svg?branch=master)](http://travis-ci.org/keesiemeijer/date-pagination)
 
-Version:           2.0.0  
+Version:           2.1.0-alpha  
 Requires at least: 4.0  
-Tested up to:      4.7  
+Tested up to:      4.8  
 
 This is the development repository for the WordPress plugin [Date Pagination](https://wordpress.org/plugins/date-pagination/).
 
