@@ -131,14 +131,18 @@ function km_dp_date_pagination_posts_clauses( $clauses, $query ) {
 	// Add all dates to the query object.
 	$query->set( 'date_pagination_dates', $all_dates );
 
-	// Get the current page.
-	if ( get_query_var( 'paged' ) ) {
-		$paged = get_query_var( 'paged' );
-	} elseif ( get_query_var( 'page' ) ) {
-		$paged = get_query_var( 'page' );
-	} else {
-		$paged = 1;
-	}
+    // Get the current page.
+    if ( !empty($query->query['paged']) && ( $query->query['paged'] > 0 ) ) {
+        $paged = $query->query['paged'];
+    } else {
+        if ( get_query_var( 'paged' ) ) {
+            $paged = get_query_var( 'paged' );
+        } elseif ( get_query_var( 'page' ) ) {
+            $paged = get_query_var( 'page' );
+        } else {
+            $paged = 1;
+        }
+    }
 
 	// Don't return posts if a paginated page is over the max_num_pages.
 	if ( $paged > $page_count ) {
