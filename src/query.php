@@ -13,7 +13,7 @@ add_filter( 'query_vars', 'km_dp_date_pagination_query_var' );
  *
  * @since 0.1
  *
- * @param array   $query_vars
+ * @param array $query_vars
  * @return array
  */
 function km_dp_date_pagination_query_var( $query_vars ) {
@@ -82,8 +82,8 @@ add_filter( 'posts_clauses', 'km_dp_date_pagination_posts_clauses', 99, 2 );
  *
  * @global $wpdb   Database object.
  *
- * @param array   $clauses Post clauses.
- * @param object  $query   Query Object.
+ * @param array  $clauses Post clauses.
+ * @param object $query   Query Object.
  * @return array Post clauses
  */
 function km_dp_date_pagination_posts_clauses( $clauses, $query ) {
@@ -131,18 +131,23 @@ function km_dp_date_pagination_posts_clauses( $clauses, $query ) {
 	// Add all dates to the query object.
 	$query->set( 'date_pagination_dates', $all_dates );
 
-    // Get the current page.
-    if ( !empty($query->query['paged']) && ( $query->query['paged'] > 0 ) ) {
-        $paged = $query->query['paged'];
-    } else {
-        if ( get_query_var( 'paged' ) ) {
-            $paged = get_query_var( 'paged' );
-        } elseif ( get_query_var( 'page' ) ) {
-            $paged = get_query_var( 'page' );
-        } else {
-            $paged = 1;
-        }
-    }
+	// Get the page number from global $wp_query.
+	if ( get_query_var( 'paged' ) ) {
+		$paged = get_query_var( 'paged' );
+	} elseif ( get_query_var( 'page' ) ) {
+		$paged = get_query_var( 'page' );
+	} else {
+		$paged = 1;
+	}
+
+	// Get the page number from the current query
+	$query_paged = $query->get( 'paged' );
+	if ( ( $query_paged > 0 ) && ( $paged !== $query_paged ) ) {
+		$paged = $query_paged;
+	}
+
+	// Add page number to the query object (for testing).
+	$query->set( 'date_pagination_paged', $paged );
 
 	// Don't return posts if a paginated page is over the max_num_pages.
 	if ( $paged > $page_count ) {
@@ -150,19 +155,19 @@ function km_dp_date_pagination_posts_clauses( $clauses, $query ) {
 	}
 
 	// Get the date for the current page.
-	$start = (int) $paged-1;
+	$start = (int) $paged - 1;
 	$date  = array_slice( (array) $dates, $start, 1 );
 
 	// Add current date to the query object.
 	$query->set( 'date_pagination_current', km_dp_date_pagination_set_date( $date ) );
 
 	// Add next date to the query object.
-	$next = array_slice( (array) $dates, $start+1, 1 );
+	$next = array_slice( (array) $dates, $start + 1, 1 );
 	$query->set( 'date_pagination_next', km_dp_date_pagination_set_date( $next ) );
 
 	// Add previous date to the query object.
 	if ( 0 < $start ) {
-		$prev = array_slice( (array) $dates, $start-1, 1 );
+		$prev = array_slice( (array) $dates, $start - 1, 1 );
 		$query->set( 'date_pagination_prev', km_dp_date_pagination_set_date( $prev ) );
 	} else {
 		$query->set( 'date_pagination_prev', array() );
