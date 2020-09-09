@@ -29,3 +29,14 @@ Follow these instructions to install the plugin.
 2. Alternatively, download the plugin and upload the contents of custom-post-type-date-archives.zip to your plugins directory, which usually is /wp-content/plugins/.
 3. Activate the plugin.
 4. That's it, now you are ready to use the plugin in your theme template files.
+
+== Changelog ==
+= 2.1.0 =
+* Fix bug for manually setting the paged variable. Props: @hlaporthein
+
+= 2.0.0
+* Initial commit
+
+== Upgrade Notice ==
+= 2.1.0 =
+This upgrade fixes a minor bug.
