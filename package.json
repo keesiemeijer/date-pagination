@@ -1,6 +1,6 @@
 {
   "name": "date-pagination",
-  "version": "2.1.0-alpha",
+  "version": "2.1.0",
   "tested_up_to": "5.5",
   "requires_at_least": "4.5",
   "main": "Gruntfile.js",

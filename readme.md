@@ -4,7 +4,7 @@ Paginate your posts by year, month or day.
 
 [![Build Status](https://travis-ci.org/keesiemeijer/date-pagination.svg?branch=master)](http://travis-ci.org/keesiemeijer/date-pagination)
 
-Version:           2.1.0-alpha  
+Version:           2.1.0  
 Requires at least: 4.5  
 Tested up to:      5.5  
 
