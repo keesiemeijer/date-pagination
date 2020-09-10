@@ -76,7 +76,7 @@ module.exports = function( grunt ) {
 				options: {
 					prefix: 'Version: *'
 				},
-				src: [ 'readme.md', 'related-posts-by-taxonomy.php' ]
+				src: [ 'readme.md', 'date-pagination.php' ]
 			},
 		},
 
@@ -85,11 +85,11 @@ module.exports = function( grunt ) {
 				src: [ 'readme.md' ],
 				overwrite: true, // overwrite matched source files
 				replacements: [ {
-					from: /related-posts-by-taxonomy.svg\?branch=(master|develop)/g,
-					to: "related-posts-by-taxonomy.svg?branch=<%= gitinfo.local.branch.current.name %>"
+					from: /date-pagination.svg\?branch=(master|develop)/g,
+					to: "date-pagination.svg?branch=<%= gitinfo.local.branch.current.name %>"
 				}, {
-					from: /related-posts-by-taxonomy\/tree\/(master|develop)#pull-requests/g,
-					to: "related-posts-by-taxonomy/tree/<%= gitinfo.local.branch.current.name %>#pull-requests"
+					from: /date-pagination\/tree\/(master|develop)#pull-requests/g,
+					to: "date-pagination/tree/<%= gitinfo.local.branch.current.name %>#pull-requests"
 				} ]
 			}
 		}

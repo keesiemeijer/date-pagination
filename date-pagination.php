@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Date Pagination
-Version: 2.0.0
+Version: 2.1.0
 Plugin URI: http://keesiemeijer.wordpress.com/date-pagination
 Description: WordPress theme template functions to paginate posts by year, month or day.
 Author: keesiemijer
