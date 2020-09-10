@@ -101,11 +101,11 @@ class Test_Date_WP_Pagination extends WP_UnitTestCase {
 		$date4 = mysql2date( 'M', $this->posts[4]->post_date );
 
 		$expected =<<<EXPECTED
-<span class='page-numbers current'>$date1</span>
-<a class='page-numbers' href='$page2'>$date2</a>
-<a class='page-numbers' href='$page3'>$date3</a>
+<span aria-current="page" class="page-numbers current">$date1</span>
+<a class="page-numbers" href="$page2">$date2</a>
+<a class="page-numbers" href="$page3">$date3</a>
 <span class="page-numbers dots">&hellip;</span>
-<a class='page-numbers' href='$page4'>$date4</a>
+<a class="page-numbers" href="$page4">$date4</a>
 <a class="next page-numbers" href="$page2">Next &raquo;</a>
 EXPECTED;
 
@@ -130,11 +130,11 @@ EXPECTED;
 		$date4 = mysql2date( 'M', $this->posts[4]->post_date );
 
 		$expected =<<<EXPECTED
-<span class='page-numbers current'>$date1</span>
-<a class='page-numbers' href='$page2'>$date2</a>
-<a class='page-numbers' href='$page3'>$date3</a>
+<span aria-current="page" class="page-numbers current">$date1</span>
+<a class="page-numbers" href="$page2">$date2</a>
+<a class="page-numbers" href="$page3">$date3</a>
 <span class="page-numbers dots">&hellip;</span>
-<a class='page-numbers' href='$page4'>$date4</a>
+<a class="page-numbers" href="$page4">$date4</a>
 <a class="next page-numbers" href="$page2">Next &raquo;</a>
 EXPECTED;
 
@@ -163,12 +163,12 @@ EXPECTED;
 		$page2= '';
 
 		$expected =<<<EXPECTED
-<a class='page-numbers' href='$home'>$date1</a>
-<span class='page-numbers current'>$date2</span>
-<a class='page-numbers' href='$page3'>$date3</a>
-<a class='page-numbers' href='$page4'>$date4</a>
+<a class="page-numbers" href="$home">$date1</a>
+<span aria-current="page" class="page-numbers current">$date2</span>
+<a class="page-numbers" href="$page3">$date3</a>
+<a class="page-numbers" href="$page4">$date4</a>
 <span class="page-numbers dots">&hellip;</span>
-<a class='page-numbers' href='$page6'>$date6</a>
+<a class="page-numbers" href="$page6">$date6</a>
 EXPECTED;
 
 		$args =array(
@@ -199,12 +199,12 @@ EXPECTED;
 
 		$expected =<<<EXPECTED
 <a class="prev page-numbers" href="$home">&laquo; Previous</a>
-<a class='page-numbers' href='$home'>$date1</a>
-<span class='page-numbers current'>$date2</span>
-<a class='page-numbers' href='$page3'>$date3</a>
-<a class='page-numbers' href='$page4'>$date4</a>
+<a class="page-numbers" href="$home">$date1</a>
+<span aria-current="page" class="page-numbers current">$date2</span>
+<a class="page-numbers" href="$page3">$date3</a>
+<a class="page-numbers" href="$page4">$date4</a>
 <span class="page-numbers dots">&hellip;</span>
-<a class='page-numbers' href='$page20'>$date20</a>
+<a class="page-numbers" href="$page20">$date20</a>
 <a class="next page-numbers" href="$page3">Next &raquo;</a>
 EXPECTED;
 

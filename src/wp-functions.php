@@ -186,6 +186,7 @@ function km_dp_paginate_links( $args = array() ) {
 		'format'             => $format, // ?page=%#% : %#% is replaced by the page number
 		'total'              => $total,
 		'current'            => $current,
+		'aria_current'       => 'page',
 		'show_all'           => false,
 		'prev_next'          => true,
 		'prev_text'          => __( '&laquo; Previous' ),
@@ -283,7 +284,12 @@ function km_dp_paginate_links( $args = array() ) {
 		}
 
 		if ( $n == $current ) {
-			$page_links[] = "<span class='page-numbers current'>" . $args['before_page_number'] . $text . $args['after_page_number'] . "</span>";
+			//$page_links[] = "<span class='page-numbers current'>" . $args['before_page_number'] . $text . $args['after_page_number'] . "</span>";
+			$page_links[] = sprintf(
+				'<span aria-current="%s" class="page-numbers current">%s</span>',
+				esc_attr( $args['aria_current'] ),
+				$args['before_page_number'] . $text . $args['after_page_number']
+			);
 			$dots = true;
 		} else {
 			if ( $args['show_all'] || ( $n <= $end_size || ( $current && $n >= $current - $mid_size && $n <= $current + $mid_size ) || $n > $total - $end_size ) ) {
@@ -295,7 +301,13 @@ function km_dp_paginate_links( $args = array() ) {
 				$link .= $args['add_fragment'];
 
 				/** This filter is documented in wp-includes/general-template.php */
-				$page_links[] = "<a class='page-numbers' href='" . esc_url( apply_filters( 'paginate_links', $link ) ) . "'>" . $args['before_page_number'] . $text . $args['after_page_number'] . "</a>";
+				$page_links[] = sprintf(
+					'<a class="page-numbers" href="%s">%s</a>',
+					/** This filter is documented in wp-includes/general-template.php */
+					esc_url( apply_filters( 'paginate_links', $link ) ),
+					$args['before_page_number'] . $text . $args['after_page_number']
+				);
+
 				$dots = true;
 			} elseif ( $dots && ! $args['show_all'] ) {
 				$page_links[] = '<span class="page-numbers dots">' . __( '&hellip;' ) . '</span>';
