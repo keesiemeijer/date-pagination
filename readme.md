@@ -14,7 +14,7 @@ This plugin provides an easy way to paginate posts by year, month or day in your
 
 It’s likely your theme is already using these functions for normal pagination. If not, see if it works with your theme’s pagination or add them yourself.
 
-To tell WordPress a page should be paginated by dates set the `date_pagination_type` query argument to `yearly`, `monthly` or `daily` for a custom query ([WP_Query](http://codex.wordpress.org/Function_Reference/WP_Query)), or in the [pre_get_posts](https://codex.wordpress.org/Plugin_API/Action_Reference/pre_get_posts) action.
+To tell WordPress a page should be paginated by dates set the `date_pagination_type` query argument to `yearly`, `monthly` or `daily` in the [pre_get_posts](https://codex.wordpress.org/Plugin_API/Action_Reference/pre_get_posts) action.
 
 See [the plugin documentation](https://keesiemeijer.wordpress.com/date-pagination/) for examples and more information on how to use this plugin in your theme.
 
